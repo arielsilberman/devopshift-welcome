@@ -64,6 +64,18 @@ pipeline {
             }
         }
 
+        stage('Wait for User Approval') {
+            steps {
+                script {
+                    // Wait for user interaction and store the result
+                    def userInput = input message: 'Is the application running successfully?',
+                                         parameters: [choice(name: 'Proceed', choices: 'Proceed\nAbort', description: 'Choose an option')]
+                    // Set a variable based on user input
+                    env.USER_CHOICE = userInput
+                }
+            }
+        }
+
         stage('Verify Application') {
             steps {
                 dir("${PROJECT_HOME}") {
