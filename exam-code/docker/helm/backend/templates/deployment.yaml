@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+  labels:
+    app: {{ .Release.Name }}-backend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-backend
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 5001
+          env:
+            # support BOTH styles (DB_* and MYSQL_*) so your app always picks it up
+            - name: DB_HOST
+              value: "{{ .Values.db.host }}"
+            - name: DB_PORT
+              value: "{{ .Values.db.port }}"
+            - name: DB_USER
+              value: "{{ .Values.db.user }}"
+            - name: DB_PASSWORD
+              value: "{{ .Values.db.password }}"
+            - name: DB_NAME
+              value: "{{ .Values.db.name }}"
+            - name: MYSQL_HOST
+              value: "{{ .Values.db.host }}"
+            - name: MYSQL_PORT
+              value: "{{ .Values.db.port }}"
+            - name: MYSQL_USER
+              value: "{{ .Values.db.user }}"
+            - name: MYSQL_PASSWORD
+              value: "{{ .Values.db.password }}"
+            - name: MYSQL_DATABASE
+              value: "{{ .Values.db.name }}"

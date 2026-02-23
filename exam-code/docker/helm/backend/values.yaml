@@ -1,0 +1,17 @@
+replicaCount: 2
+
+image:
+  repository: arielsilberman/crypto-backend
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5001
+
+db:
+  host: "RELEASE-mysql"   
+  port: 3306
+  user: root
+  password: "123456"
+  name: crypto_db
